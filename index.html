@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portefeuille Java - @TechNerdSam</title>
+    
+    <!-- Importation de Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuration de Tailwind (optionnel, mais assure la police) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-primary': '#6366F1', // Indigo-500
+                        'brand-secondary': '#EC4899', // Pink-500
+                        'base-900': '#0F172A', // Slate-900
+                        'base-800': '#1E293B', // Slate-800
+                        'base-700': '#334155', // Slate-700
+                        'base-text': '#E2E8F0', // Slate-200
+                        'base-subtext': '#94A3B8', // Slate-400
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Styles CSS personnalisés -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A; /* base-900 */
+            color: #E2E8F0; /* base-text */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Effet de dégradé subtil sur l'arrière-plan */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1), transparent 30%),
+                        radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1), transparent 30%);
+            opacity: 0.7;
+        }
+
+        /* Style de la barre de défilement (pour un look futuriste) */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1E293B; /* base-800 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #334155; /* base-700 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #475569; /* slate-600 */
+        }
+        
+        /* Classe pour l'animation d'apparition */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <!-- Conteneur principal -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+
+        <!-- En-tête -->
+        <header class="text-center mb-16 fade-in" style="animation-delay: 100ms;">
+            <div class="inline-block p-4 bg-base-800 border border-base-700 rounded-full shadow-lg mb-4">
+                <!-- Placeholder pour une image de profil -->
+                <img class="h-24 w-24 rounded-full" 
+                     src="https://github.com/TechNerdSam.png" 
+                     alt="Profil de TechNerdSam"
+                     onerror="this.onerror=null; this.src='https://placehold.co/96x96/0F172A/E2E8F0?text=TS';">
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">
+                Portefeuille Java
+            </h1>
+            <p class="mt-4 text-xl text-base-subtext">
+                Une collection de projets Java par @TechNerdSam
+            </p>
+        </header>
+
+        <!-- Section des projets -->
+        <main>
+            <!-- Message de statut (chargement, erreur, etc.) -->
+            <div id="status-message" class="text-center text-base-subtext text-lg my-12">
+                <!-- Le JavaScript remplira ce message -->
+            </div>
+
+            <!-- Grille des projets -->
+            <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                <!-- Les cartes de projet seront injectées ici par JavaScript -->
+            </div>
+        </main>
+
+        <!-- Pied de page -->
+        <footer class="text-center text-base-subtext mt-20 border-t border-base-700 pt-8">
+            <p>&copy; <span id="current-year"></span>. Propulsé par l'API GitHub et Tailwind CSS.</p>
+        </footer>
+    </div>
+
+    <!-- Script JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const USERNAME = 'TechNerdSam';
+
+            // --- FIX POUR LA LIMITE API ---
+            // Collez votre jeton d'accès personnel (Personal Access Token) GitHub ici.
+            // Cela permet d'augmenter la limite de requêtes API de 60 à 5000/heure.
+            // 1. Allez sur https://github.com/settings/tokens
+            // 2. Cliquez sur "Generate new token" (ou "classic").
+            // 3. Donnez-lui un nom (ex: "PortfolioSite") et cochez la case "public_repo".
+            // 4. Copiez le jeton et collez-le entre les guillemets ci-dessous.
+            const GITHUB_TOKEN = ''; // <--- METTEZ VOTRE JETON (PAT) ICI
+            // -----------------------------
+
+            const API_URL = `https://api.github.com/users/${USERNAME}/repos?sort=updated&per_page=100`;
+
+            const projectGrid = document.getElementById('project-grid');
+            const statusMessage = document.getElementById('status-message');
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // Icônes SVG pour les cartes
+            const starIcon = `
+                <svg class="w-4 h-4 mr-1 inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+            `;
+            const forkIcon = `
+                <svg class="w-4 h-4 mr-1 inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path></svg>
+                <!-- Utilisation d'une icône "éclair" pour "fork", pour un look plus futuriste. On peut remplacer par une icône de fork classique si besoin. -->
+            `;
+            
+            const downloadIcon = `
+                <svg class="w-4 h-4 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            `;
+            
+            const linkIcon = `
+                <svg class="w-4 h-4 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+            `;
+
+            /**
+              * Crée une carte de projet et l'ajoute à la grille.
+              * @param {object} repo - L'objet dépôt de l'API GitHub
+              * @param {number} delay - Le délai d'animation
+              * @param {string} downloadUrl - L'URL de téléchargement (ou du repo)
+              * @param {string} buttonText - Le texte du bouton (Télécharger / Voir)
+              */
+            function createProjectCard(repo, delay, downloadUrl, buttonText) {
+                const card = document.createElement('div');
+                card.className = 'fade-in flex flex-col bg-base-800/70 backdrop-blur-sm border border-base-700 rounded-xl shadow-2xl transition-all duration-300 hover:scale-[1.03] hover:border-brand-primary/50 overflow-hidden';
+                card.style.animationDelay = `${delay}ms`;
+
+                // Corps de la carte
+                const cardBody = document.createElement('div');
+                cardBody.className = 'p-6 flex-grow flex flex-col';
+                
+                // Nom du projet
+                const repoName = document.createElement('h3');
+                repoName.className = 'text-xl font-bold text-base-text mb-2 truncate';
+                repoName.textContent = repo.name;
+
+                // Description
+                const repoDescription = document.createElement('p');
+                repoDescription.className = 'text-sm text-base-subtext mb-4 flex-grow';
+                repoDescription.textContent = repo.description || 'Aucune description fournie.';
+                
+                // Statistiques
+                const stats = document.createElement('div');
+                stats.className = 'flex items-center text-sm text-base-subtext space-x-4 mb-5';
+                stats.innerHTML = `
+                    <span class="flex items-center" title="${repo.stargazers_count} étoiles">
+                        ${starIcon}
+                        ${repo.stargazers_count}
+                    </span>
+                    <span class="flex items-center" title="${repo.forks_count} forks">
+                        ${forkIcon}
+                        ${repo.forks_count}
+                    </span>
+                    <span class="font-medium text-brand-primary">${repo.language}</span>
+                `;
+
+                // Bouton/Lien
+                const repoLink = document.createElement('a');
+                repoLink.href = downloadUrl; // Utilisation de l'URL dynamique
+                repoLink.target = '_blank';
+                repoLink.rel = 'noopener noreferrer';
+                repoLink.className = 'mt-auto text-center w-full inline-flex items-center justify-center px-5 py-2.5 bg-brand-primary text-white text-sm font-semibold rounded-lg shadow-md hover:bg-opacity-80 transition-all duration-300 transform hover:scale-105';
+                
+                // Ajout de l'icône appropriée
+                if (buttonText === 'Télécharger') {
+                    repoLink.innerHTML = `${downloadIcon} ${buttonText}`;
+                } else {
+                    repoLink.innerHTML = `${linkIcon} ${buttonText}`;
+                }
+
+                // Assemblage de la carte
+                cardBody.appendChild(repoName);
+                cardBody.appendChild(repoDescription);
+                cardBody.appendChild(stats);
+                cardBody.appendChild(repoLink);
+                card.appendChild(cardBody);
+
+                projectGrid.appendChild(card);
+            }
+
+            /**
+             * Tente de trouver la dernière release pour un dépôt.
+             * Retourne un objet avec l'URL de téléchargement et le texte du bouton.
+             */
+            async function fetchLatestRelease(repo, headers) {
+                const releaseUrl = `https://api.github.com/repos/${USERNAME}/${repo.name}/releases/latest`;
+                try {
+                    const response = await fetch(releaseUrl, { headers });
+                    if (!response.ok) {
+                        // Pas de release trouvée (404), c'est normal
+                        return { downloadUrl: repo.html_url, buttonText: 'Voir sur GitHub' };
+                    }
+                    
+                    const release = await response.json();
+                    // Chercher un asset .jar ou .zip
+                    const asset = release.assets?.find(a => 
+                        a.name.endsWith('.jar') || a.name.endsWith('.zip')
+                    );
+                    
+                    if (asset) {
+                        return { downloadUrl: asset.browser_download_url, buttonText: 'Télécharger' };
+                    } else {
+                        // Release trouvée, mais pas d'asset .jar/.zip
+                        return { downloadUrl: repo.html_url, buttonText: 'Voir sur GitHub' };
+                    }
+                } catch (error) {
+                    console.warn(`Impossible de vérifier les releases pour ${repo.name}:`, error);
+                    return { downloadUrl: repo.html_url, buttonText: 'Voir sur GitHub' };
+                }
+            }
+
+            /**
+             * Fonction principale pour récupérer les dépôts.
+             */
+            async function fetchRepos() {
+                statusMessage.textContent = 'Chargement des projets Java...';
+                let animationDelay = 0;
+
+                // Ajout d'un avertissement si le jeton est manquant
+                if (!GITHUB_TOKEN) {
+                    console.warn('GITHUB_TOKEN est vide. Vous risquez de rencontrer des limites de taux API de GitHub.');
+                    statusMessage.innerHTML = 'Chargement... <br><span class="text-sm text-yellow-400 mt-2 block">Note : Ajoutez un GITHUB_TOKEN dans le script pour éviter les erreurs de limite API.</span>';
+                }
+
+                const headers = {};
+                if (GITHUB_TOKEN) {
+                    headers['Authorization'] = `Bearer ${GITHUB_TOKEN}`;
+                }
+
+                try {
+                    // Ajout des 'headers' à l'appel fetch
+                    const response = await fetch(API_URL, { headers: headers });
+                    
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            throw new Error('Profil GitHub non trouvé.');
+                        } else if (response.status === 403) {
+                            throw new Error("Limite d'appels à l'API GitHub atteinte. Réessayez plus tard.");
+                        }
+                        throw new Error(`Erreur réseau: ${response.statusText}`);
+                    }
+
+                    const repos = await response.json();
+                    
+                    // Filtrer pour ne garder que les projets Java
+                    const javaRepos = repos.filter(repo => repo.language === 'Java' && !repo.archived);
+
+                    if (javaRepos.length === 0) {
+                        statusMessage.textContent = 'Aucun projet Java public trouvé pour ce profil.';
+                    } else {
+                        statusMessage.style.display = 'none'; // Cacher le message de statut
+                        
+                        // Créer un tableau de promesses pour fetch les releases
+                        const releasePromises = javaRepos.map(repo => fetchLatestRelease(repo, headers));
+                        
+                        // Attendre que toutes les vérifications de release soient terminées
+                        const results = await Promise.all(releasePromises);
+
+                        // Maintenant, créer les cartes avec les bonnes infos
+                        results.forEach((result, index) => {
+                            const repo = javaRepos[index]; // L'ordre est conservé
+                            createProjectCard(
+                                repo, 
+                                animationDelay, 
+                                result.downloadUrl, 
+                                result.buttonText
+                            );
+                            animationDelay += 100; // Décalage pour l'animation
+                        });
+                    }
+
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des dépôts:', error);
+                    statusMessage.textContent = `Erreur : ${error.message}`;
+                    statusMessage.className = 'text-center text-red-400 text-lg my-12';
+                }
+            }
+
+            // Démarrer la récupération
+            fetchRepos();
+        });
+    </script>
+
+</body>
+</html>
+
+
