@@ -18,10 +18,10 @@
                     },
                     colors: {
                         'brand-primary': '#6366F1', // Indigo-500
-                        'brand-secondary': '#EC4899', // Pink-500
-                        'base-900': '#0F172A', // Slate-900
-                        'base-800': '#1E293B', // Slate-800
-                        'base-700': '#334155', // Slate-700
+                        'brand-secondary': '#D946EF', // Fuchsia-500 (Nouveau)
+                        'base-900': '#0B1120', // Plus sombre
+                        'base-800': '#1A2233', // Plus sombre
+                        'base-700': '#2A354A', // Plus sombre
                         'base-text': '#E2E8F0', // Slate-200
                         'base-subtext': '#94A3B8', // Slate-400
                     }
@@ -36,13 +36,13 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0F172A; /* base-900 */
+            background-color: #0B1120; /* base-900 (Nouveau) */
             color: #E2E8F0; /* base-text */
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Effet de dégradé subtil sur l'arrière-plan */
+        /* Effet de dégradé subtil sur l'arrière-plan (Nouveau) */
         body::before {
             content: '';
             position: fixed;
@@ -51,24 +51,25 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1), transparent 30%),
-                        radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1), transparent 30%);
-            opacity: 0.7;
+            background: radial-gradient(circle at 5% 15%, rgba(99, 102, 241, 0.15), transparent 40%),
+                        radial-gradient(circle at 95% 85%, rgba(217, 70, 239, 0.15), transparent 40%);
+            opacity: 0.8;
+            pointer-events: none; /* Assure que le pseudo-élément n'interfère pas */
         }
 
-        /* Style de la barre de défilement (pour un look futuriste) */
+        /* Style de la barre de défilement (Nouveau) */
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #1E293B; /* base-800 */
+            background: #1A2233; /* base-800 (Nouveau) */
         }
         ::-webkit-scrollbar-thumb {
-            background-color: #334155; /* base-700 */
+            background-color: #2A354A; /* base-700 (Nouveau) */
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background-color: #475569; /* slate-600 */
+            background-color: #3E4C6E; /* Slate-600 ajusté */
         }
         
         /* Classe pour l'animation d'apparition */
@@ -97,12 +98,13 @@
 
         <!-- En-tête -->
         <header class="text-center mb-16 fade-in" style="animation-delay: 100ms;">
-            <div class="inline-block p-4 bg-base-800 border border-base-700 rounded-full shadow-lg mb-4">
+            <!-- Conteneur de l'image avec bordure en dégradé (Nouveau) -->
+            <div class="inline-block p-1 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-full shadow-lg mb-4">
                 <!-- Placeholder pour une image de profil -->
-                <img class="h-24 w-24 rounded-full" 
+                <img class="h-32 w-32 rounded-full border-4 border-base-900" 
                      src="https://github.com/TechNerdSam.png" 
                      alt="Profil de TechNerdSam"
-                     onerror="this.onerror=null; this.src='https://placehold.co/96x96/0F172A/E2E8F0?text=TS';">
+                     onerror="this.onerror=null; this.src='https://placehold.co/128x128/0B1120/E2E8F0?text=TS';">
             </div>
             <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">
                 Portefeuille Java
@@ -126,7 +128,7 @@
         </main>
 
         <!-- Pied de page -->
-        <footer class="text-center text-base-subtext mt-20 border-t border-base-700 pt-8">
+        <footer class="text-center text-base-subtext mt-20 border-t border-base-700/50 pt-8"> <!-- Opacité bordure (Nouveau) -->
             <p>&copy; <span id="current-year"></span>. Propulsé par l'API GitHub et Tailwind CSS.</p>
         </footer>
     </div>
@@ -173,12 +175,13 @@
               * Crée une carte de projet et l'ajoute à la grille.
               * @param {object} repo - L'objet dépôt de l'API GitHub
               * @param {number} delay - Le délai d'animation
-              * @param {string} downloadUrl - L'URL de téléchargement (ou du repo)
-              * @param {string} buttonText - Le texte du bouton (Télécharger / Voir)
+              * @param {string} repoUrl - L'URL du dépôt GitHub
+              * @param {string | null} downloadUrl - L'URL de téléchargement de la release (ou null)
               */
-            function createProjectCard(repo, delay, downloadUrl, buttonText) {
+            function createProjectCard(repo, delay, repoUrl, downloadUrl) {
                 const card = document.createElement('div');
-                card.className = 'fade-in flex flex-col bg-base-800/70 backdrop-blur-sm border border-base-700 rounded-xl shadow-2xl transition-all duration-300 hover:scale-[1.03] hover:border-brand-primary/50 overflow-hidden';
+                // Style de carte mis à jour (Nouveau)
+                card.className = 'fade-in flex flex-col bg-base-800/60 backdrop-blur-md border border-base-700/70 rounded-xl shadow-2xl shadow-black/30 transition-all duration-300 hover:scale-[1.03] hover:border-transparent hover:shadow-[0_0_25px_rgba(99,102,241,0.5)] overflow-hidden';
                 card.style.animationDelay = `${delay}ms`;
 
                 // Corps de la carte
@@ -207,28 +210,54 @@
                         ${forkIcon}
                         ${repo.forks_count}
                     </span>
-                    <span class="font-medium text-brand-primary">${repo.language}</span>
+                    <span class="font-medium text-brand-secondary">${repo.language}</span> <!-- Couleur secondaire (Nouveau) -->
                 `;
 
-                // Bouton/Lien
+                // Conteneur pour les boutons (Nouveau)
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'mt-auto grid grid-cols-1 gap-3'; // Sera 1 colonne par défaut
+                
+                // S'il y a un lien de téléchargement, on passe en 2 colonnes sur écrans moyens
+                if (downloadUrl) {
+                    buttonContainer.classList.remove('grid-cols-1');
+                    buttonContainer.classList.add('sm:grid-cols-2'); // 2 colonnes sur sm et plus
+                }
+
+                // 1. Bouton "Télécharger" (si disponible)
+                if (downloadUrl) {
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = downloadUrl;
+                    downloadLink.target = '_blank'; // Ouvre dans un nouvel onglet
+                    downloadLink.rel = 'noopener noreferrer';
+                    downloadLink.className = 'text-center w-full inline-flex items-center justify-center px-5 py-2.5 bg-gradient-to-r from-brand-primary to-brand-secondary text-white text-sm font-semibold rounded-lg shadow-lg shadow-brand-primary/30 hover:shadow-xl hover:shadow-brand-primary/40 hover:scale-105 transition-all duration-300 transform';
+                    downloadLink.innerHTML = `${downloadIcon} Télécharger`;
+                    buttonContainer.appendChild(downloadLink);
+                }
+
+                // 2. Bouton "Voir sur GitHub" (toujours présent)
                 const repoLink = document.createElement('a');
-                repoLink.href = downloadUrl; // Utilisation de l'URL dynamique
+                repoLink.href = repoUrl;
                 repoLink.target = '_blank';
                 repoLink.rel = 'noopener noreferrer';
-                repoLink.className = 'mt-auto text-center w-full inline-flex items-center justify-center px-5 py-2.5 bg-brand-primary text-white text-sm font-semibold rounded-lg shadow-md hover:bg-opacity-80 transition-all duration-300 transform hover:scale-105';
                 
-                // Ajout de l'icône appropriée
-                if (buttonText === 'Télécharger') {
-                    repoLink.innerHTML = `${downloadIcon} ${buttonText}`;
+                // Style différent si le bouton "Télécharger" existe
+                if (downloadUrl) {
+                    // Style secondaire (bordure)
+                    repoLink.className = 'text-center w-full inline-flex items-center justify-center px-5 py-2.5 bg-transparent border border-base-700 text-base-subtext text-sm font-medium rounded-lg hover:text-base-text hover:border-brand-primary transition-all duration-300';
                 } else {
-                    repoLink.innerHTML = `${linkIcon} ${buttonText}`;
+                    // Style principal (dégradé) car c'est le seul bouton
+                    repoLink.className = 'text-center w-full inline-flex items-center justify-center px-5 py-2.5 bg-gradient-to-r from-brand-primary to-brand-secondary text-white text-sm font-semibold rounded-lg shadow-lg shadow-brand-primary/30 hover:shadow-xl hover:shadow-brand-primary/40 hover:scale-105 transition-all duration-300 transform';
                 }
+                
+                repoLink.innerHTML = `${linkIcon} Voir sur GitHub`;
+                buttonContainer.appendChild(repoLink);
+
 
                 // Assemblage de la carte
                 cardBody.appendChild(repoName);
                 cardBody.appendChild(repoDescription);
                 cardBody.appendChild(stats);
-                cardBody.appendChild(repoLink);
+                cardBody.appendChild(buttonContainer); // Ajout du conteneur de boutons
                 card.appendChild(cardBody);
 
                 projectGrid.appendChild(card);
@@ -236,33 +265,35 @@
 
             /**
              * Tente de trouver la dernière release pour un dépôt.
-             * Retourne un objet avec l'URL de téléchargement et le texte du bouton.
+             * Retourne un objet avec l'URL du repo et l'URL de téléchargement (si elle existe).
              */
             async function fetchLatestRelease(repo, headers) {
                 const releaseUrl = `https://api.github.com/repos/${USERNAME}/${repo.name}/releases/latest`;
+                let assetDownloadUrl = null; // Initialiser à null
+
                 try {
                     const response = await fetch(releaseUrl, { headers });
-                    if (!response.ok) {
-                        // Pas de release trouvée (404), c'est normal
-                        return { downloadUrl: repo.html_url, buttonText: 'Voir sur GitHub' };
+                    if (response.ok) { // Une release existe
+                        const release = await response.json();
+                        // Chercher un asset .jar ou .zip
+                        const asset = release.assets?.find(a => 
+                            a.name.endsWith('.jar') || a.name.endsWith('.zip')
+                        );
+                        
+                        if (asset) {
+                            assetDownloadUrl = asset.browser_download_url; // On a trouvé un asset
+                        }
                     }
-                    
-                    const release = await response.json();
-                    // Chercher un asset .jar ou .zip
-                    const asset = release.assets?.find(a => 
-                        a.name.endsWith('.jar') || a.name.endsWith('.zip')
-                    );
-                    
-                    if (asset) {
-                        return { downloadUrl: asset.browser_download_url, buttonText: 'Télécharger' };
-                    } else {
-                        // Release trouvée, mais pas d'asset .jar/.zip
-                        return { downloadUrl: repo.html_url, buttonText: 'Voir sur GitHub' };
-                    }
+                    // Si !response.ok (pas de release), assetDownloadUrl reste null, ce qui est correct.
                 } catch (error) {
                     console.warn(`Impossible de vérifier les releases pour ${repo.name}:`, error);
-                    return { downloadUrl: repo.html_url, buttonText: 'Voir sur GitHub' };
                 }
+                
+                // Toujours retourner l'URL du repo et l'URL de téléchargement (si trouvée)
+                return { 
+                    repoUrl: repo.html_url, 
+                    downloadUrl: assetDownloadUrl 
+                };
             }
 
             /**
@@ -291,7 +322,8 @@
                         if (response.status === 404) {
                             throw new Error('Profil GitHub non trouvé.');
                         } else if (response.status === 403) {
-                            throw new Error("Limite d'appels à l'API GitHub atteinte. Réessayez plus tard.");
+                            const resetTime = new Date(response.headers.get('X-RateLimit-Reset') * 1000);
+                            throw new Error(`Limite d'appels à l'API GitHub atteinte. Réessayez après ${resetTime.toLocaleTimeString()}.`);
                         }
                         throw new Error(`Erreur réseau: ${response.statusText}`);
                     }
@@ -318,8 +350,8 @@
                             createProjectCard(
                                 repo, 
                                 animationDelay, 
-                                result.downloadUrl, 
-                                result.buttonText
+                                result.repoUrl,     // URL du repo
+                                result.downloadUrl   // URL de la release (ou null)
                             );
                             animationDelay += 100; // Décalage pour l'animation
                         });
