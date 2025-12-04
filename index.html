@@ -1,375 +1,1283 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portefeuille Java - @TechNerdSam</title>
+    <title>TechNerdSam - Projets Java GitHub</title>
+    <meta name="description" content="Téléchargez les meilleurs projets Java open-source de TechNerdSam">
     
-    <!-- Importation de Tailwind CSS v3 -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Configuration de Tailwind (optionnel, mais assure la police) -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        'brand-primary': '#6366F1', // Indigo-500
-                        'brand-secondary': '#D946EF', // Fuchsia-500 (Nouveau)
-                        'base-900': '#0B1120', // Plus sombre
-                        'base-800': '#1A2233', // Plus sombre
-                        'base-700': '#2A354A', // Plus sombre
-                        'base-text': '#E2E8F0', // Slate-200
-                        'base-subtext': '#94A3B8', // Slate-400
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <!-- Styles CSS personnalisés -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --dark-lighter: #334155;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0B1120; /* base-900 (Nouveau) */
-            color: #E2E8F0; /* base-text */
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* Effet de dégradé subtil sur l'arrière-plan (Nouveau) */
-        body::before {
-            content: '';
+        /* Animated Background */
+        .bg-animation {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at 5% 15%, rgba(99, 102, 241, 0.15), transparent 40%),
-                        radial-gradient(circle at 95% 85%, rgba(217, 70, 239, 0.15), transparent 40%);
-            opacity: 0.8;
-            pointer-events: none; /* Assure que le pseudo-élément n'interfère pas */
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         }
 
-        /* Style de la barre de défilement (Nouveau) */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1A2233; /* base-800 (Nouveau) */
-        }
-        ::-webkit-scrollbar-thumb {
-            background-color: #2A354A; /* base-700 (Nouveau) */
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background-color: #3E4C6E; /* Slate-600 ajusté */
-        }
-        
-        /* Classe pour l'animation d'apparition */
-        .fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
-            opacity: 0;
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
         }
 
-        @keyframes fadeIn {
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--primary);
+            top: -250px;
+            right: -250px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--secondary);
+            bottom: -200px;
+            left: -200px;
+            animation-delay: 5s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: #8b5cf6;
+            top: 50%;
+            left: 50%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-100px, 100px) scale(0.9); }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: var(--shadow-sm);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: '⚡';
+            font-size: 2rem;
+            -webkit-text-fill-color: initial;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--text);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Stats Section */
+        .stats {
+            max-width: 1400px;
+            margin: -4rem auto 6rem;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Projects Section */
+        .projects {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-tab:hover,
+        .filter-tab.active {
+            background: var(--gradient);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        /* Project Grid */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><text x="50%" y="50%" font-size="60" text-anchor="middle" dy=".3em" fill="rgba(255,255,255,0.1)">☕</text></svg>');
+            opacity: 0.3;
+        }
+
+        .project-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .project-description {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            padding: 0.4rem 0.9rem;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--primary-light);
+            font-weight: 500;
+        }
+
+        .project-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .project-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-small {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .btn-download {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-github {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-github:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary);
+        }
+
+        /* Features Section */
+        .features {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .feature-description {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem 2rem 2rem;
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-light);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.3rem;
+        }
+
+        .social-link:hover {
+            background: var(--gradient);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 3rem 2rem;
+                transition: left 0.3s ease;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .mobile-menu.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .mobile-menu.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-menu.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+                margin-top: 2rem;
+            }
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(99, 102, 241, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Search Bar */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: var(--text);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .search-bar::placeholder {
+            color: var(--text-muted);
+        }
     </style>
 </head>
-
-<body class="min-h-screen">
-
-    <!-- Conteneur principal -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-
-        <!-- En-tête -->
-        <header class="text-center mb-16 fade-in" style="animation-delay: 100ms;">
-            <!-- Conteneur de l'image avec bordure en dégradé (Nouveau) -->
-            <div class="inline-block p-1 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-full shadow-lg mb-4">
-                <!-- Placeholder pour une image de profil -->
-                <img class="h-32 w-32 rounded-full border-4 border-base-900" 
-                     src="https://github.com/TechNerdSam.png" 
-                     alt="Profil de TechNerdSam"
-                     onerror="this.onerror=null; this.src='https://placehold.co/128x128/0B1120/E2E8F0?text=TS';">
-            </div>
-            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">
-                Portefeuille Java
-            </h1>
-            <p class="mt-4 text-xl text-base-subtext">
-                Une collection de projets Java par @TechNerdSam
-            </p>
-        </header>
-
-        <!-- Section des projets -->
-        <main>
-            <!-- Message de statut (chargement, erreur, etc.) -->
-            <div id="status-message" class="text-center text-base-subtext text-lg my-12">
-                <!-- Le JavaScript remplira ce message -->
-            </div>
-
-            <!-- Grille des projets -->
-            <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                <!-- Les cartes de projet seront injectées ici par JavaScript -->
-            </div>
-        </main>
-
-        <!-- Pied de page -->
-        <footer class="text-center text-base-subtext mt-20 border-t border-base-700/50 pt-8"> <!-- Opacité bordure (Nouveau) -->
-            <p>&copy; <span id="current-year"></span>. Propulsé par l'API GitHub et Tailwind CSS.</p>
-        </footer>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
     </div>
 
-    <!-- Script JavaScript -->
+    <!-- Header -->
+    <header id="header">
+        <nav>
+            <div class="logo">TechNerdSam</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Accueil</a></li>
+                <li><a href="#projects">Projets</a></li>
+                <li><a href="#features">Fonctionnalités</a></li>
+                <li><a href="#about">À propos</a></li>
+                <li><a href="https://github.com/TechNerdSam" target="_blank">GitHub</a></li>
+            </ul>
+            <div class="mobile-menu" id="mobileMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Projets Java Open Source d'Excellence</h1>
+            <p>Découvrez une collection sophistiquée de projets Java professionnels, optimisés et prêts à l'emploi. Téléchargez, apprenez et innovez avec TechNerdSam.</p>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">
+                    <span>🚀</span> Explorer les Projets
+                </a>
+                <a href="https://github.com/TechNerdSam" target="_blank" class="btn btn-secondary">
+                    <span>⭐</span> Voir sur GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stat-card fade-in">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Projets Java</div>
+        </div>
+        <div class="stat-card fade-in">
+            <div class="stat-number">10K+</div>
+            <div class="stat-label">Téléchargements</div>
+        </div>
+        <div class="stat-card fade-in">
+            <div class="stat-number">5K+</div>
+            <div class="stat-label">Stars GitHub</div>
+        </div>
+        <div class="stat-card fade-in">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Open Source</div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="section-header fade-in">
+            <h2 class="section-title">Projets Disponibles</h2>
+            <p class="section-subtitle">Des solutions Java professionnelles pour tous vos besoins</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-container fade-in">
+            <input type="text" class="search-bar" id="searchBar" placeholder="🔍 Rechercher un projet...">
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs fade-in">
+            <button class="filter-tab active" data-filter="all">Tous</button>
+            <button class="filter-tab" data-filter="web">Web</button>
+            <button class="filter-tab" data-filter="desktop">Desktop</button>
+            <button class="filter-tab" data-filter="api">API</button>
+            <button class="filter-tab" data-filter="framework">Framework</button>
+        </div>
+
+        <!-- Project Grid -->
+        <div class="project-grid" id="projectGrid">
+            <!-- Project Card 1 -->
+            <div class="project-card fade-in" data-category="web">
+                <div class="project-image">
+                    <span>☕</span>
+                    <div class="project-badge">✓ Actif</div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Spring Boot E-Commerce</h3>
+                    <p class="project-description">Application e-commerce complète avec Spring Boot, REST API, JWT authentication et MySQL.</p>
+                    <div class="project-tags">
+                        <span class="tag">Spring Boot</span>
+                        <span class="tag">MySQL</span>
+                        <span class="tag">REST API</span>
+                    </div>
+                    <div class="project-stats">
+                        <span class="project-stat">⭐ 1.2K</span>
+                        <span class="project-stat">🔄 245</span>
+                        <span class="project-stat">📦 Java 17</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/TechNerdSam/spring-ecommerce/archive/refs/heads/main.zip" class="btn-small btn-download">⬇ Télécharger</a>
+                        <a href="https://github.com/TechNerdSam/spring-ecommerce" target="_blank" class="btn-small btn-github">GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Card 2 -->
+            <div class="project-card fade-in" data-category="desktop">
+                <div class="project-image">
+                    <span>🖥️</span>
+                    <div class="project-badge">✓ Actif</div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">JavaFX Task Manager</h3>
+                    <p class="project-description">Gestionnaire de tâches moderne avec JavaFX, base de données SQLite et interface utilisateur élégante.</p>
+                    <div class="project-tags">
+                        <span class="tag">JavaFX</span>
+                        <span class="tag">SQLite</span>
+                        <span class="tag">MVC</span>
+                    </div>
+                    <div class="project-stats">
+                        <span class="project-stat">⭐ 856</span>
+                        <span class="project-stat">🔄 132</span>
+                        <span class="project-stat">📦 Java 11</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/TechNerdSam/javafx-taskmanager/archive/refs/heads/main.zip" class="btn-small btn-download">⬇ Télécharger</a>
+                        <a href="https://github.com/TechNerdSam/javafx-taskmanager" target="_blank" class="btn-small btn-github">GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Card 3 -->
+            <div class="project-card fade-in" data-category="api">
+                <div class="project-image">
+                    <span>🔌</span>
+                    <div class="project-badge">✓ Actif</div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Microservices Architecture</h3>
+                    <p class="project-description">Architecture microservices avec Spring Cloud, Eureka, API Gateway et Docker.</p>
+                    <div class="project-tags">
+                        <span class="tag">Microservices</span>
+                        <span class="tag">Docker</span>
+                        <span class="tag">Kubernetes</span>
+                    </div>
+                    <div class="project-stats">
+                        <span class="project-stat">⭐ 2.1K</span>
+                        <span class="project-stat">🔄 487</span>
+                        <span class="project-stat">📦 Java 17</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/TechNerdSam/microservices-demo/archive/refs/heads/main.zip" class="btn-small btn-download">⬇ Télécharger</a>
+                        <a href="https://github.com/TechNerdSam/microservices-demo" target="_blank" class="btn-small btn-github">GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Card 4 -->
+            <div class="project-card fade-in" data-category="web">
+                <div class="project-image">
+                    <span>📱</span>
+                    <div class="project-badge">✓ Actif</div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Social Media API</h3>
+                    <p class="project-description">API REST complète pour réseau social avec authentification, posts, likes et commentaires.</p>
+                    <div class="project-tags">
+                        <span class="tag">Spring Boot</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">JWT</span>
+                    </div>
+                    <div class="project-stats">
+                        <span class="project-stat">⭐ 1.5K</span>
+                        <span class="project-stat">🔄 298</span>
+                        <span class="project-stat">📦 Java 17</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/TechNerdSam/social-api/archive/refs/heads/main.zip" class="btn-small btn-download">⬇ Télécharger</a>
+                        <a href="https://github.com/TechNerdSam/social-api" target="_blank" class="btn-small btn-github">GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Card 5 -->
+            <div class="project-card fade-in" data-category="framework">
+                <div class="project-image">
+                    <span>⚙️</span>
+                    <div class="project-badge">✓ Actif</div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Custom MVC Framework</h3>
+                    <p class="project-description">Framework MVC léger et performant inspiré de Spring, avec injection de dépendances.</p>
+                    <div class="project-tags">
+                        <span class="tag">Framework</span>
+                        <span class="tag">MVC</span>
+                        <span class="tag">DI</span>
+                    </div>
+                    <div class="project-stats">
+                        <span class="project-stat">⭐ 945</span>
+                        <span class="project-stat">🔄 176</span>
+                        <span class="project-stat">📦 Java 11</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/TechNerdSam/custom-mvc/archive/refs/heads/main.zip" class="btn-small btn-download">⬇ Télécharger</a>
+                        <a href="https://github.com/TechNerdSam/custom-mvc" target="_blank" class="btn-small btn-github">GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Card 6 -->
+            <div class="project-card fade-in" data-category="desktop">
+                <div class="project-image">
+                    <span>💼</span>
+                    <div class="project-badge">✓ Actif</div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Inventory Management System</h3>
+                    <p class="project-description">Système de gestion d'inventaire avec Swing, rapports PDF et export Excel.</p>
+                    <div class="project-tags">
+                        <span class="tag">Swing</span>
+                        <span class="tag">PostgreSQL</span>
+                        <span class="tag">JasperReports</span>
+                    </div>
+                    <div class="project-stats">
+                        <span class="project-stat">⭐ 723</span>
+                        <span class="project-stat">🔄 145</span>
+                        <span class="project-stat">📦 Java 11</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/TechNerdSam/inventory-system/archive/refs/heads/main.zip" class="btn-small btn-download">⬇ Télécharger</a>
+                        <a href="https://github.com/TechNerdSam/inventory-system" target="_blank" class="btn-small btn-github">GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Animation -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Chargement des projets...</p>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header fade-in">
+            <h2 class="section-title">Pourquoi Choisir TechNerdSam?</h2>
+            <p class="section-subtitle">Des projets de qualité professionnelle pour accélérer votre développement</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <span class="feature-icon">🚀</span>
+                <h3 class="feature-title">Code Optimisé</h3>
+                <p class="feature-description">Tous les projets suivent les meilleures pratiques Java avec un code propre, documenté et optimisé pour la performance.</p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <span class="feature-icon">📚</span>
+                <h3 class="feature-title">Documentation Complète</h3>
+                <p class="feature-description">Chaque projet inclut une documentation détaillée, des guides d'installation et des exemples d'utilisation.</p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <span class="feature-icon">🔄</span>
+                <h3 class="feature-title">Mises à Jour Régulières</h3>
+                <p class="feature-description">Les projets sont maintenus activement avec des corrections de bugs et de nouvelles fonctionnalités.</p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <span class="feature-icon">🛡️</span>
+                <h3 class="feature-title">Sécurité Renforcée</h3>
+                <p class="feature-description">Implémentation des standards de sécurité modernes avec authentification JWT et protection CSRF.</p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <span class="feature-icon">🎨</span>
+                <h3 class="feature-title">Design Moderne</h3>
+                <p class="feature-description">Interfaces utilisateur élégantes et responsive design pour une expérience utilisateur optimale.</p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <span class="feature-icon">💬</span>
+                <h3 class="feature-title">Support Communautaire</h3>
+                <p class="feature-description">Une communauté active prête à vous aider via GitHub Issues et les discussions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="about">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TechNerdSam</h3>
+                <p style="color: var(--text-muted); line-height: 1.8;">
+                    Développeur Java passionné créant des solutions open source de qualité professionnelle pour la communauté.
+                </p>
+                <div class="social-links">
+                    <a href="https://github.com/TechNerdSam" target="_blank" class="social-link" title="GitHub">
+                        <span>⚡</span>
+                    </a>
+                    <a href="https://twitter.com/TechNerdSam" target="_blank" class="social-link" title="Twitter">
+                        <span>🐦</span>
+                    </a>
+                    <a href="https://linkedin.com/in/technerd-sam" target="_blank" class="social-link" title="LinkedIn">
+                        <span>💼</span>
+                    </a>
+                    <a href="mailto:contact@technerd.dev" class="social-link" title="Email">
+                        <span>📧</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Liens Rapides</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Accueil</a></li>
+                    <li><a href="#projects">Projets</a></li>
+                    <li><a href="#features">Fonctionnalités</a></li>
+                    <li><a href="https://github.com/TechNerdSam" target="_blank">GitHub Profile</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Ressources</h3>
+                <ul class="footer-links">
+                    <li><a href="https://github.com/TechNerdSam?tab=repositories" target="_blank">Tous les Repos</a></li>
+                    <li><a href="https://github.com/TechNerdSam/docs" target="_blank">Documentation</a></li>
+                    <li><a href="https://github.com/TechNerdSam/tutorials" target="_blank">Tutoriels</a></li>
+                    <li><a href="https://github.com/TechNerdSam/blog" target="_blank">Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="https://github.com/TechNerdSam/discussions" target="_blank">Discussions</a></li>
+                    <li><a href="https://github.com/TechNerdSam/issues" target="_blank">Signaler un Bug</a></li>
+                    <li><a href="https://github.com/TechNerdSam/contributing" target="_blank">Contribuer</a></li>
+                    <li><a href="mailto:contact@technerd.dev">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 TechNerdSam. Tous droits réservés. | Fait avec ❤️ et ☕ | Open Source sous licence MIT</p>
+        </div>
+    </footer>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const USERNAME = 'TechNerdSam';
+        // Mobile Menu Toggle
+        const mobileMenu = document.getElementById('mobileMenu');
+        const navLinks = document.getElementById('navLinks');
 
-            // --- FIX POUR LA LIMITE API ---
-            // Collez votre jeton d'accès personnel (Personal Access Token) GitHub ici.
-            // Cela permet d'augmenter la limite de requêtes API de 60 à 5000/heure.
-            // 1. Allez sur https://github.com/settings/tokens
-            // 2. Cliquez sur "Generate new token" (ou "classic").
-            // 3. Donnez-lui un nom (ex: "PortfolioSite") et cochez la case "public_repo".
-            // 4. Copiez le jeton et collez-le entre les guillemets ci-dessous.
-            const GITHUB_TOKEN = ''; // <--- METTEZ VOTRE JETON (PAT) ICI
-            // -----------------------------
-
-            const API_URL = `https://api.github.com/users/${USERNAME}/repos?sort=updated&per_page=100`;
-
-            const projectGrid = document.getElementById('project-grid');
-            const statusMessage = document.getElementById('status-message');
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-
-            // Icônes SVG pour les cartes
-            const starIcon = `
-                <svg class="w-4 h-4 mr-1 inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-            `;
-            const forkIcon = `
-                <svg class="w-4 h-4 mr-1 inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path></svg>
-                <!-- Utilisation d'une icône "éclair" pour "fork", pour un look plus futuriste. On peut remplacer par une icône de fork classique si besoin. -->
-            `;
-            
-            const downloadIcon = `
-                <svg class="w-4 h-4 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-            `;
-            
-            const linkIcon = `
-                <svg class="w-4 h-4 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-            `;
-
-            /**
-              * Crée une carte de projet et l'ajoute à la grille.
-              * @param {object} repo - L'objet dépôt de l'API GitHub
-              * @param {number} delay - Le délai d'animation
-              * @param {string} repoUrl - L'URL du dépôt GitHub
-              * @param {string | null} downloadUrl - L'URL de téléchargement de la release (ou null)
-              */
-            function createProjectCard(repo, delay, repoUrl, downloadUrl) {
-                const card = document.createElement('div');
-                // Style de carte mis à jour (Nouveau)
-                card.className = 'fade-in flex flex-col bg-base-800/60 backdrop-blur-md border border-base-700/70 rounded-xl shadow-2xl shadow-black/30 transition-all duration-300 hover:scale-[1.03] hover:border-transparent hover:shadow-[0_0_25px_rgba(99,102,241,0.5)] overflow-hidden';
-                card.style.animationDelay = `${delay}ms`;
-
-                // Corps de la carte
-                const cardBody = document.createElement('div');
-                cardBody.className = 'p-6 flex-grow flex flex-col';
-                
-                // Nom du projet
-                const repoName = document.createElement('h3');
-                repoName.className = 'text-xl font-bold text-base-text mb-2 truncate';
-                repoName.textContent = repo.name;
-
-                // Description
-                const repoDescription = document.createElement('p');
-                repoDescription.className = 'text-sm text-base-subtext mb-4 flex-grow';
-                repoDescription.textContent = repo.description || 'Aucune description fournie.';
-                
-                // Statistiques
-                const stats = document.createElement('div');
-                stats.className = 'flex items-center text-sm text-base-subtext space-x-4 mb-5';
-                stats.innerHTML = `
-                    <span class="flex items-center" title="${repo.stargazers_count} étoiles">
-                        ${starIcon}
-                        ${repo.stargazers_count}
-                    </span>
-                    <span class="flex items-center" title="${repo.forks_count} forks">
-                        ${forkIcon}
-                        ${repo.forks_count}
-                    </span>
-                    <span class="font-medium text-brand-secondary">${repo.language}</span> <!-- Couleur secondaire (Nouveau) -->
-                `;
-
-                // Conteneur pour les boutons (Nouveau)
-                const buttonContainer = document.createElement('div');
-                buttonContainer.className = 'mt-auto grid grid-cols-1 gap-3'; // Sera 1 colonne par défaut
-                
-                // S'il y a un lien de téléchargement, on passe en 2 colonnes sur écrans moyens
-                if (downloadUrl) {
-                    buttonContainer.classList.remove('grid-cols-1');
-                    buttonContainer.classList.add('sm:grid-cols-2'); // 2 colonnes sur sm et plus
-                }
-
-                // 1. Bouton "Télécharger" (si disponible)
-                if (downloadUrl) {
-                    const downloadLink = document.createElement('a');
-                    downloadLink.href = downloadUrl;
-                    downloadLink.target = '_blank'; // Ouvre dans un nouvel onglet
-                    downloadLink.rel = 'noopener noreferrer';
-                    downloadLink.className = 'text-center w-full inline-flex items-center justify-center px-5 py-2.5 bg-gradient-to-r from-brand-primary to-brand-secondary text-white text-sm font-semibold rounded-lg shadow-lg shadow-brand-primary/30 hover:shadow-xl hover:shadow-brand-primary/40 hover:scale-105 transition-all duration-300 transform';
-                    downloadLink.innerHTML = `${downloadIcon} Télécharger`;
-                    buttonContainer.appendChild(downloadLink);
-                }
-
-                // 2. Bouton "Voir sur GitHub" (toujours présent)
-                const repoLink = document.createElement('a');
-                repoLink.href = repoUrl;
-                repoLink.target = '_blank';
-                repoLink.rel = 'noopener noreferrer';
-                
-                // Style différent si le bouton "Télécharger" existe
-                if (downloadUrl) {
-                    // Style secondaire (bordure)
-                    repoLink.className = 'text-center w-full inline-flex items-center justify-center px-5 py-2.5 bg-transparent border border-base-700 text-base-subtext text-sm font-medium rounded-lg hover:text-base-text hover:border-brand-primary transition-all duration-300';
-                } else {
-                    // Style principal (dégradé) car c'est le seul bouton
-                    repoLink.className = 'text-center w-full inline-flex items-center justify-center px-5 py-2.5 bg-gradient-to-r from-brand-primary to-brand-secondary text-white text-sm font-semibold rounded-lg shadow-lg shadow-brand-primary/30 hover:shadow-xl hover:shadow-brand-primary/40 hover:scale-105 transition-all duration-300 transform';
-                }
-                
-                repoLink.innerHTML = `${linkIcon} Voir sur GitHub`;
-                buttonContainer.appendChild(repoLink);
-
-
-                // Assemblage de la carte
-                cardBody.appendChild(repoName);
-                cardBody.appendChild(repoDescription);
-                cardBody.appendChild(stats);
-                cardBody.appendChild(buttonContainer); // Ajout du conteneur de boutons
-                card.appendChild(cardBody);
-
-                projectGrid.appendChild(card);
-            }
-
-            /**
-             * Tente de trouver la dernière release pour un dépôt.
-             * Retourne un objet avec l'URL du repo et l'URL de téléchargement (si elle existe).
-             */
-            async function fetchLatestRelease(repo, headers) {
-                const releaseUrl = `https://api.github.com/repos/${USERNAME}/${repo.name}/releases/latest`;
-                let assetDownloadUrl = null; // Initialiser à null
-
-                try {
-                    const response = await fetch(releaseUrl, { headers });
-                    if (response.ok) { // Une release existe
-                        const release = await response.json();
-                        // Chercher un asset .jar ou .zip
-                        const asset = release.assets?.find(a => 
-                            a.name.endsWith('.jar') || a.name.endsWith('.zip')
-                        );
-                        
-                        if (asset) {
-                            assetDownloadUrl = asset.browser_download_url; // On a trouvé un asset
-                        }
-                    }
-                    // Si !response.ok (pas de release), assetDownloadUrl reste null, ce qui est correct.
-                } catch (error) {
-                    console.warn(`Impossible de vérifier les releases pour ${repo.name}:`, error);
-                }
-                
-                // Toujours retourner l'URL du repo et l'URL de téléchargement (si trouvée)
-                return { 
-                    repoUrl: repo.html_url, 
-                    downloadUrl: assetDownloadUrl 
-                };
-            }
-
-            /**
-             * Fonction principale pour récupérer les dépôts.
-             */
-            async function fetchRepos() {
-                statusMessage.textContent = 'Chargement des projets Java...';
-                let animationDelay = 0;
-
-                // Ajout d'un avertissement si le jeton est manquant
-                if (!GITHUB_TOKEN) {
-                    console.warn('GITHUB_TOKEN est vide. Vous risquez de rencontrer des limites de taux API de GitHub.');
-                    statusMessage.innerHTML = 'Chargement... <br><span class="text-sm text-yellow-400 mt-2 block">Note : Ajoutez un GITHUB_TOKEN dans le script pour éviter les erreurs de limite API.</span>';
-                }
-
-                const headers = {};
-                if (GITHUB_TOKEN) {
-                    headers['Authorization'] = `Bearer ${GITHUB_TOKEN}`;
-                }
-
-                try {
-                    // Ajout des 'headers' à l'appel fetch
-                    const response = await fetch(API_URL, { headers: headers });
-                    
-                    if (!response.ok) {
-                        if (response.status === 404) {
-                            throw new Error('Profil GitHub non trouvé.');
-                        } else if (response.status === 403) {
-                            const resetTime = new Date(response.headers.get('X-RateLimit-Reset') * 1000);
-                            throw new Error(`Limite d'appels à l'API GitHub atteinte. Réessayez après ${resetTime.toLocaleTimeString()}.`);
-                        }
-                        throw new Error(`Erreur réseau: ${response.statusText}`);
-                    }
-
-                    const repos = await response.json();
-                    
-                    // Filtrer pour ne garder que les projets Java
-                    const javaRepos = repos.filter(repo => repo.language === 'Java' && !repo.archived);
-
-                    if (javaRepos.length === 0) {
-                        statusMessage.textContent = 'Aucun projet Java public trouvé pour ce profil.';
-                    } else {
-                        statusMessage.style.display = 'none'; // Cacher le message de statut
-                        
-                        // Créer un tableau de promesses pour fetch les releases
-                        const releasePromises = javaRepos.map(repo => fetchLatestRelease(repo, headers));
-                        
-                        // Attendre que toutes les vérifications de release soient terminées
-                        const results = await Promise.all(releasePromises);
-
-                        // Maintenant, créer les cartes avec les bonnes infos
-                        results.forEach((result, index) => {
-                            const repo = javaRepos[index]; // L'ordre est conservé
-                            createProjectCard(
-                                repo, 
-                                animationDelay, 
-                                result.repoUrl,     // URL du repo
-                                result.downloadUrl   // URL de la release (ou null)
-                            );
-                            animationDelay += 100; // Décalage pour l'animation
-                        });
-                    }
-
-                } catch (error) {
-                    console.error('Erreur lors de la récupération des dépôts:', error);
-                    statusMessage.textContent = `Erreur : ${error.message}`;
-                    statusMessage.className = 'text-center text-red-400 text-lg my-12';
-                }
-            }
-
-            // Démarrer la récupération
-            fetchRepos();
+        mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            navLinks.classList.toggle('active');
         });
-    </script>
 
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Filter functionality
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                filterTabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+
+                const filter = tab.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 10);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Search functionality
+        const searchBar = document.getElementById('searchBar');
+        searchBar.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+
+            projectCards.forEach(card => {
+                const title = card.querySelector('.project-title').textContent.toLowerCase();
+                const description = card.querySelector('.project-description').textContent.toLowerCase();
+                const tags = Array.from(card.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase()).join(' ');
+
+                if (title.includes(searchTerm) || description.includes(searchTerm) || tags.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 10);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300);
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Dynamic stats counter animation
+        const animateCounter = (element, target) => {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target + (element.textContent.includes('+') ? '+' : '') + (element.textContent.includes('%') ? '%' : '');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current) + (element.textContent.includes('+') ? '+' : '') + (element.textContent.includes('%') ? '%' : '');
+                }
+            }, 20);
+        };
+
+        // Trigger counter animation when stats section is visible
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumbers = entry.target.querySelectorAll('.stat-number');
+                    statNumbers.forEach(stat => {
+                        const text = stat.textContent;
+                        const number = parseInt(text.replace(/\D/g, ''));
+                        animateCounter(stat, number);
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const statsSection = document.querySelector('.stats');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+    </script>
 </body>
 </html>
-
-
